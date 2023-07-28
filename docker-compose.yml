@@ -1,8 +1,9 @@
 version: '3.9'
 
 services:
-  database:
+  db:
     image: mariadb:latest
+    container_name: database
     ports:
       - "3307:3306"
     environment:
@@ -21,13 +22,14 @@ services:
       context: .
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8009 --noreload
+    container_name: main
     image: app:django
     ports:
       - "8009:8009"
     depends_on:
-      - database 
+      - db 
     links:
-      - database
+      - db
 
 volumes:
   mariadb_data:
